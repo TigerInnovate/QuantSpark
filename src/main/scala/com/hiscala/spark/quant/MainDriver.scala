@@ -20,7 +20,7 @@ object MainDriver extends Serializable {
     val symbol = "CSCO"
     val path = "./data/symbols"
     val filename = "csco.csv"
-    val filePath = s"${path}/${filename}"
+    val filePath = s"$path/$filename"
 
     val parsedSymbolTxn: RDD[SymbolTransaction] = new QuantSymbolLoader(symbol, sc).loadCSV(filePath)
 
@@ -34,6 +34,14 @@ object MainDriver extends Serializable {
     nums.foreach(println)
     println("---print date stats---")
     println(dts)
+
+    //run logistic regression
+
+    //1. label training dataset
+
+    //2. train the model
+
+    //3. predict
 
   }
 }
