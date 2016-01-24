@@ -24,18 +24,16 @@ object MainDriver extends Serializable {
 
     val parsedSymbolTxn: RDD[SymbolTransaction] = new QuantSymbolLoader(symbol, sc).loadCSV(filePath)
 
-    parsedSymbolTxn.take(100).foreach(println)
+    //parsedSymbolTxn.take(100).foreach(println)
 
+    //check stats
+    val nums = Stats.numFieldsStats(parsedSymbolTxn.map(r => r.metrics))
+    val dts = Stats.dateFieldStats(parsedSymbolTxn.map(r => r.date))
 
-    /*
-        //check stats
-        val nums = Stats.numFieldsStats(parsedSymbolTxn.map(r => r.metrics))
-        val dts = Stats.dateFieldStats(parsedSymbolTxn.map(r => r.date))
+    println("---print number stats---")
+    nums.foreach(println)
+    println("---print date stats---")
+    println(dts)
 
-        println("---print number stats---")
-        nums.foreach(println)
-        println("---print date stats---")
-        println(dts)
-    */
   }
 }
