@@ -5,6 +5,10 @@ package com.hiscala.spark.quant
   */
 
 import com.hiscala.quant.trading.YahooFinancials
+import org.apache.spark.mllib.classification.LogisticRegressionWithLBFGS
+import org.apache.spark.mllib.evaluation.MulticlassMetrics
+import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -50,10 +54,37 @@ object MainDriver extends Serializable {
 
     //1. label training dataset
 
+    val lblPnts: RDD[LabeledPoint] = normalizedVolaVolu.map((vv: (Double, Double)) => {
+      if (vv._1 > 0.3 && vv._2 > 0.1)
+        LabeledPoint(1.0, Vectors.dense(vv._1, vv._2))
+      else
+        LabeledPoint(0.0, Vectors.dense(vv._1, vv._2))
+    })
+
+    val splits = lblPnts.randomSplit(Array(0.6, 0.4), seed = 11L)
+    val trainingSet = splits(0).cache()
+    val testSet = splits(1)
 
     //2. train the model
+    val model = new LogisticRegressionWithLBFGS()
+      .setNumClasses(10)
+      .run(trainingSet)
 
     //3. predict
+    val predictionAndLabels = testSet.map { case LabeledPoint(label, features) =>
+      val prediction = model.predict(features)
+      (prediction, label)
+    }
 
+    // Get evaluation metrics.
+    val metrics = new MulticlassMetrics(predictionAndLabels)
+    val precision = metrics.precision
+    println("Precision = " + precision)
+    println("Recall = " + metrics.recall)
+
+    /*// Save and load model
+    model.save(sc, "myModelPath")
+    val sameModel = LogisticRegressionModel.load(sc, "myModelPath")
+    */
   }
 }
