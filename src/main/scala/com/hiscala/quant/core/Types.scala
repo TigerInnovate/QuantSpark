@@ -21,7 +21,8 @@ package com.hiscala.quant.core
 object Types {
   val emptyString = ""
 
-  type Fields = Array[String]
+  type StrFields = Array[String]
+  type Fields = Array[Double]
   type DblArray = Array[Double]
 }
 
