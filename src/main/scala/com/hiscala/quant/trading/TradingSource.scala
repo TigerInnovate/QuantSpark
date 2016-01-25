@@ -23,7 +23,8 @@ object YahooFinancials extends Enumeration {
   type YahooFinancials = Value
 
   //variables
-  val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
+  //val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
+  val OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
 
   private final val EPS = 1e-6
 
