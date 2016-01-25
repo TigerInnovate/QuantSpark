@@ -4,6 +4,7 @@ package com.hiscala.spark.quant
   * Created by Guanjun.Wang on 2016/1/23.
   */
 
+import com.hiscala.quant.trading.YahooFinancials
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -36,6 +37,14 @@ object MainDriver extends Serializable {
     println(dts)
 
     //run logistic regression
+
+    val volatilityVolume: RDD[(Double, Double)] = parsedSymbolTxn.map(x => YahooFinancials.volatilityVol(x.metrics))
+    import com.hiscala.spark.stats.Stats
+    val normalizedVolatility: RDD[Double] = new Stats(volatilityVolume.map(_._1)).normalize
+    val normalizedVolume = new Stats(volatilityVolume.map(_._2)).normalize
+
+    val normalizedVolaVolu: RDD[(Double, Double)] = normalizedVolatility zip normalizedVolume
+
 
     //1. label training dataset
 
