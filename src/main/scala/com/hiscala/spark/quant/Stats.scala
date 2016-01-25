@@ -10,6 +10,10 @@ import com.github.nscala_time.time.Imports._
 /**
   * Created by Guanjun.Wang on 2016/1/23.
   */
+
+
+
+
 object Stats {
 
   def numFieldsStats(rdd: RDD[Array[Double]]): Array[NAStatCounter] = {
