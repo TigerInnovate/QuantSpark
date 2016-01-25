@@ -46,8 +46,9 @@ class Stats(val variable: RDD[Double]) {
   override def toString = _stats.toString
 
   def normalize = {
-    val range = max - min
-    variable.map(x => (x - min) / range)
+    val _range = max - min
+    val _min = min //use local variable to avoid serializable
+    variable.map(x => (x - _min) / _range)
   }
 }
 

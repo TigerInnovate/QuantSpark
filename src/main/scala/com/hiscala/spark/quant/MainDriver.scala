@@ -45,6 +45,8 @@ object MainDriver extends Serializable {
 
     val normalizedVolaVolu: RDD[(Double, Double)] = normalizedVolatility zip normalizedVolume
 
+    normalizedVolaVolu.take(10).foreach(println)
+
 
     //1. label training dataset
 
