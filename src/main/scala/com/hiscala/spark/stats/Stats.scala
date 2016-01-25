@@ -34,7 +34,7 @@ class Stats(val variable: RDD[Double]) {
   def mean = _stats.stats.mean
 
   def min = _stats.stats.min
-  
+
   def max = _stats.stats.max
 
   def variance = _stats.stats.variance
@@ -44,6 +44,11 @@ class Stats(val variable: RDD[Double]) {
   def missing = _stats.missing
 
   override def toString = _stats.toString
+
+  def normalize = {
+    val range = max - min
+    variable.map(x => (x - min) / range)
+  }
 }
 
 //-------------------EOF-------------------
